@@ -9,7 +9,7 @@ def push_notification(title: str, message: str) -> None:
     Display a toast notification.
     """
     toaster = ToastNotifier()
-    duration = 10
+    duration = 30
     toaster.show_toast(title, message, duration=duration, threaded=True)
 
 
@@ -55,9 +55,19 @@ if __name__ == '__main__':
         target_date = datetime.strptime(target_date, '%d-%m-%Y %H:%M:%S')
 
         # check if the date inside the file is greater or equal to the current date
-        if now >= target_date:
+        if now > target_date:
             push_notification(
                 'Windows Update!', 'Check your Windows 10 for any potential updates.')
+
+            # set the reminder date
+            next_date = now + timedelta(days=days)
+
+            # convert datetime object the str format
+            next_date = next_date.strftime('%d-%m-%Y %H:%M:%S')
+
+            # save the remainder date in a file
+            save(filepath, next_date)
+
         else:
             print('Still Time')
 
